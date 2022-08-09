@@ -12,20 +12,20 @@ Helps structure the formatting of objects in Python.
 
 ### Example
 ```python
-import beautiful_repr
+from beautiful_repr import *
 
 
-class ShoppingCart(beautiful_repr.StylizedMixin):
-    repr = beautiful_repr.BeautifulRepr([
-        beautiful_repr.Field("token"),
-        beautiful_repr.Field(
+class ShoppingCart(StylizedMixin):
+    repr = BeautifulRepr([
+        Field("token"),
+        Field(
             "products",
-            value_getter=beautiful_repr.tools.parse_length,
-            formatter=beautiful_repr.tools.TemplateFormatter("{value} products")
+            value_getter=parse_length,
+            formatter=TemplateFormatter("{value} products")
         ),
     ])
 
-    def __init__(self, token: str, products: Iterable[str,] = tuple()):
+    def __init__(self, token: str, products: tuple[str,] = tuple()):
         self.token = token
         self.products = tuple(products)
 
