@@ -3,6 +3,8 @@ from dataclasses import dataclass, field
 
 from typing import Callable, Iterable
 
+import tools
+
 
 class _AdvancingCounter:
     """
@@ -39,10 +41,10 @@ class Field:
     name: str | None = None
     importance_index: int = field(default_factory=_AdvancingCounter())
     value_getter: Callable[[object, str], any] = lambda object_, field_name: getattr(object_, field_name)
-    formater: Callable[[any, str], str] = lambda value, field_name: f"{field_name}={value}"
+    formatter: Callable[[any, str], str] = lambda value, field_name: f"{field_name}={value}"
 
     def get_formated_by(self, object_with_field: object) -> str:
-        return self.formater(self.value_getter(object_with_field, self.name), self.name)
+        return self.formatter(self.value_getter(object_with_field, self.name), self.name)
 
 
 class BaseRepr(ABC):
@@ -99,7 +101,7 @@ class BeautifulRepr(FieldRepr):
         )
 
 
-class Stylized(ABC):
+class StylizedMixin(ABC):
     """
     Class for replacing the default repr with an external one, stored in the
     "repr" attribute.
