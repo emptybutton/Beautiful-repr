@@ -16,16 +16,16 @@ from beautiful_repr import *
 
 
 class ShoppingCart(StylizedMixin):
-    repr = BeautifulRepr([
+    _repr_fields = (
         Field("token"),
         Field(
             "products",
             value_getter=parse_length,
             formatter=TemplateFormatter("{value} products")
         ),
-    ])
+    )
 
-    def __init__(self, token: str, products: tuple[str,] = tuple()):
+    def __init__(self, token: str, products: tuple[str, ] = tuple()):
         self.token = token
         self.products = tuple(products)
 
