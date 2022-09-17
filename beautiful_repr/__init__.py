@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+from abc import ABC, abstractmethod, ABCMeta
 from dataclasses import dataclass, field
 from typing import Callable, Iterable
 
@@ -123,14 +123,14 @@ class TemplateFormatter(FieldFormatter):
         return self.template.format(value=value)
 
 
-class StylizedMeta(type):
+class StylizedMeta(ABCMeta):
     """
     Abstarct meta class.
     With the creation of the class, it also creates a repr for it.
     """
 
     def __new__(cls, class_name: str, super_classes: tuple, attributes: dict):
-        class_ = type.__new__(cls, class_name, super_classes, attributes)
+        class_ = super().__new__(cls, class_name, super_classes, attributes)
         class_.__init_repr__()
 
         return class_
@@ -144,7 +144,7 @@ class FieldStylizedMeta(StylizedMeta):
     Initializes the field repr. To work correctly, the class must be similar to
     StylizedMixin or contain the _repr_factory and _repr_fields attributes.
     """
-    
+
     def __init_repr__(cls) -> BaseRepr:
         cls._repr = cls._repr_factory(frozenset(sum(
             (
