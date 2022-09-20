@@ -17,7 +17,7 @@ from beautiful_repr import *
 
 class ShoppingCart(StylizedMixin):
     _repr_fields = (
-        Field("token"),
+        Field("token", value_transformer=lambda value: value[1:]),
         Field(
             "products",
             value_getter=parse_length,
@@ -33,4 +33,4 @@ class ShoppingCart(StylizedMixin):
 print(ShoppingCart("s12345", ("Potato", "iPhone", "New Vegas")))
 ```
 
-**output:** `ShoppingCart(token=s12345, 3 products)`
+**output:** `ShoppingCart(token=12345, 3 products)`

@@ -48,9 +48,13 @@ class Field:
     importance_index: int = field(default_factory=_AdvancingCounter())
     value_getter: Callable[[object, str], any] = lambda object_, field_name: getattr(object_, field_name)
     formatter: Callable[[any, str], str] = lambda value, field_name: f"{field_name}={value}"
+    value_transformer: Callable[[any], str] = lambda value: value
 
     def get_formated_by(self, object_with_field: object) -> str:
-        return self.formatter(self.value_getter(object_with_field, self.name), self.name)
+        return self.formatter(
+            self.value_transformer(self.value_getter(object_with_field, self.name)),
+            self.name
+        )
 
 
 class BaseRepr(ABC):
